@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+ApplicationController---InventoryManagementApplication
+InventoryManagementApplication---addItems
+InventoryManagementApplication---checkValid
+InventoryManagementApplication---clearEverything
+InventoryManagementApplication---inventoryItem
+InventoryManagementApplication---openFile
+InventoryManagementApplication---removeItems
+InventoryManagementApplication---saveFile
+InventoryManagementApplication---searchFor
+InventoryManagementApplication---setErrorMessage
+
+@enduml
