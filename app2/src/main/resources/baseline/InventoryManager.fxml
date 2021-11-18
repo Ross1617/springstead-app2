@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="639.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="baseline.ApplicationController">
+   <children>
+      <TableView fx:id="tableOfValues" layoutY="110.0" prefHeight="288.0" prefWidth="639.0" style="-fx-background-color: white;">
+        <columns>
+          <TableColumn fx:id="SerialNumberColumn" prefWidth="187.2000150680542" text="Serial Number" />
+          <TableColumn fx:id="nameColumn" prefWidth="255.99998474121094" text="Name" />
+            <TableColumn fx:id="valueColumn" prefWidth="192.800048828125" text="Value" />
+        </columns>
+      </TableView>
+      <Label layoutX="177.0" layoutY="-2.0" prefHeight="35.0" prefWidth="285.0" text="Welcome to Ross' Item Manager" textAlignment="CENTER">
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.06593406593406594">
+                     <color>
+                        <Color green="1.0" blue="0.45258620381355286" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.23137255012989044" green="0.6470588445663452" blue="0.9882352948188782" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label layoutX="169.0" layoutY="412.0" prefHeight="27.0" prefWidth="130.0" text="Error Message :" textFill="RED">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="errorMessage" editable="false" layoutX="307.0" layoutY="413.0" prefHeight="26.0" prefWidth="214.0" style="-fx-background-color: red;" />
+      <TextField fx:id="serialNumber" alignment="CENTER" layoutY="72.0" promptText="Enter Serial Number" />
+      <TextField alignment="CENTER" layoutX="150.0" layoutY="72.0" promptText="Name of Product" />
+      <TextField alignment="CENTER" layoutX="300.0" layoutY="72.0" prefHeight="26.0" prefWidth="94.0" promptText="Value" />
+      <Button fx:id="addButton" layoutX="404.0" layoutY="72.0" mnemonicParsing="false" onAction="#addButtonClicked" text="Add" />
+      <Button fx:id="removeButton" layoutX="452.0" layoutY="72.0" mnemonicParsing="false" onAction="#removeButtonClicked" text="Remove" />
+      <Button fx:id="clearButton" layoutX="521.0" layoutY="72.0" mnemonicParsing="false" onAction="#clearButtonClicked" text="Clear" />
+      <MenuButton fx:id="Save" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#SaveClicked" text="Save">
+        <items>
+          <MenuItem fx:id="saveTSV" mnemonicParsing="false" onAction="#SaveTSVCLICKED" text="Save TSV" />
+          <MenuItem fx:id="loadHTMl" mnemonicParsing="false" onAction="#SaveHTMLClicked" text="Save HTML" />
+            <MenuItem fx:id="saveJSON" mnemonicParsing="false" onAction="#SaveJSONClicked" text="Save JSON" />
+        </items>
+      </MenuButton>
+      <MenuButton fx:id="Load" layoutX="75.0" layoutY="15.0" mnemonicParsing="false" onAction="#LoadClicked" prefHeight="26.0" prefWidth="59.0" text="Load">
+        <items>
+          <MenuItem fx:id="loadTSV" mnemonicParsing="false" onAction="#LoadTSVClicked" text="Load TSV" />
+          <MenuItem fx:id="loadHTML" mnemonicParsing="false" onAction="#loadHTMLClicked" text="Load HTML" />
+            <MenuItem fx:id="loadJSON" mnemonicParsing="false" onAction="#loadJSONClicked" text="Load JSON" />
+        </items>
+      </MenuButton>
+      <Button fx:id="searchButton" layoutX="573.0" layoutY="72.0" mnemonicParsing="false" onAction="#searchButtonClicked" text="Search" />
+   </children>
+</AnchorPane>
