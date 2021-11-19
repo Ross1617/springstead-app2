@@ -4,6 +4,8 @@ package baseline;
  *  Copyright 2021 Ross Springstead
  */
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,10 +15,17 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class ApplicationController {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class ApplicationController implements Initializable {
+    private ArrayList<String> inventoryList = new ArrayList<>();
 
     @FXML
     private MenuButton Load;
@@ -24,8 +33,7 @@ public class ApplicationController {
     @FXML
     private MenuButton Save;
 
-    @FXML
-    private TableColumn<?, ?> SerialNumberColumn;
+
 
     @FXML
     private Button addButton;
@@ -49,9 +57,6 @@ public class ApplicationController {
     private MenuItem loadTSV;
 
     @FXML
-    private TableColumn<?, ?> nameColumn;
-
-    @FXML
     private Button removeButton;
 
     @FXML
@@ -67,16 +72,83 @@ public class ApplicationController {
     private TextField serialNumber;
 
     @FXML
-    private TableView<?> tableOfValues;
+    private TableView<inventoryItem> tableOfValues;
 
     @FXML
-    private TableColumn<?, ?> valueColumn;
+    private TextField nameOfProduct;
+
+    @FXML
+    private TextField valueOfProduct;
+
+    @FXML
+    private TableColumn<inventoryItem, String> valueColumn;
+
+    @FXML
+    private TableColumn<inventoryItem, String> SerialNumberColumn;
+
+    @FXML
+    private TableColumn<inventoryItem, String> nameColumn;
 
     //overriding the initialize function so I can set the table up
     // set each column to be editable
     // get the value, so I can check to see if it is valid or not
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        SerialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("Number"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        valueColumn.setCellValueFactory(new PropertyValueFactory<>("Value"));
+        valueColumn.setCellFactory(TextFieldTableCell.<inventoryItem>forTableColumn());
+        nameColumn.setCellFactory(TextFieldTableCell.<inventoryItem>forTableColumn());
+        SerialNumberColumn.setCellFactory(TextFieldTableCell.<inventoryItem>forTableColumn());
+        tableOfValues.setItems(inventory);
+        //allows to edit the table
+        tableOfValues.setEditable(true);
+        nameColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<inventoryItem,String> t) -> {
+                    modifyShown changes = new modifyShown();
+                    //getting the values of the selected row
+                    String oldValue = t.getTableView().getItems().get(t.getTablePosition().getRow()).getValue();
+                    String oldNumber = t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumber();
+                    String oldName = t.getTableView().getItems().get(t.getTablePosition().getRow()).getName();
+                    ((inventoryItem)t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
+                    String newDescription = t.getTableView().getItems().get(t.getTablePosition().getRow()).getValue();
+                    String old = oldNumber+"_" + oldName + "_"+ oldValue;
+                    //changing the array list
+                    inventoryList = changes.modifyArrayList(inventoryList, newDescription, old, 2);
+
+                }
+        );
+        valueColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<inventoryItem,String> t) -> {
+                    modifyShown changes = new modifyShown();
+                    String oldValue = t.getTableView().getItems().get(t.getTablePosition().getRow()).getValue();
+                    String oldNumber = t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumber();
+                    String oldName = t.getTableView().getItems().get(t.getTablePosition().getRow()).getName();
+                    ((inventoryItem)t.getTableView().getItems().get(t.getTablePosition().getRow())).setValue(t.getNewValue());
+                    String newName = t.getTableView().getItems().get(t.getTablePosition().getRow()).getName();
+                    String old = oldNumber+"_" + oldName + "_"+ oldValue;
+                    //changing the array list
+                    inventoryList = changes.modifyArrayList(inventoryList, newName, old, 1);
+                }
+        );
+        SerialNumberColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<inventoryItem,String> t) -> {
+                    modifyShown changes = new modifyShown();
+                    String oldValue = t.getTableView().getItems().get(t.getTablePosition().getRow()).getValue();
+                    String oldNumber = t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumber();
+                    String oldName = t.getTableView().getItems().get(t.getTablePosition().getRow()).getName();
+                    ((inventoryItem)t.getTableView().getItems().get(t.getTablePosition().getRow())).setNumber(t.getNewValue());
+                    String newNumber = t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumber();
+                    String old = oldNumber+"_" + oldName + "_"+ oldValue;
+                    //changing the array list
+                    inventoryList = changes.modifyArrayList(inventoryList, newNumber, old, 0);
+                }
+        );
+    }
 
 
+    private ObservableList<inventoryItem> inventory = FXCollections.observableArrayList();
     @FXML
     void LoadClicked(ActionEvent event) {
 
@@ -117,17 +189,39 @@ public class ApplicationController {
     }
 
     @FXML
-    void addButtonClicked(ActionEvent event) {
+    ArrayList<String> addButtonClicked(ActionEvent event) {
         //get the value of the price, item number, and name
+        addItems add = new addItems();
+        System.out.printf("HEY");
         //check to see if they are valid inputs
-        //call the addItem function
-        //update the tableViewer
+        String number, value, name;
+        number = serialNumber.getText();
+        name = nameOfProduct.getText();
+        value = valueOfProduct.getText();
+        String error = "";
+        checkValid check = new checkValid();
+        error = check.checkValid(number,name,value,inventoryList);
+        if (error.equals("")){
+            inventoryItem item = new inventoryItem(number, name, value);
+            tableOfValues.getItems().add(item);
+            inventoryList = add.addTask(number,name,value,inventoryList);
+            //update the tableViewer
+            serialNumber.clear();
+            nameOfProduct.clear();
+            valueOfProduct.clear();
+        }
+        else {
+            errorMessage.setText(error);
+        }
+        return inventoryList;
+
     }
 
     @FXML
     void clearButtonClicked(ActionEvent event) {
-        //clear the tableViewer
-        //call the clearEverything function
+        tableOfValues.getItems().clear();
+        clearEverything clear = new clearEverything();
+        inventoryList = clear.clearArrayList();
 
     }
 
@@ -147,9 +241,15 @@ public class ApplicationController {
     }
 
     @FXML
-    void removeButtonClicked(ActionEvent event) {
-        //update the tableViewer by getting the selected row
-        //call removeItem function
+    ArrayList<String> removeButtonClicked(ActionEvent event) {
+        removeItems remove = new removeItems();
+        inventoryItem item = tableOfValues.getSelectionModel().getSelectedItem();
+        String itemString = item.getNumber() + "_" + item.getName() + "_" + item.getValue();
+        //calls the removeTask function with the value
+        tableOfValues.getItems().removeAll((tableOfValues.getSelectionModel().getSelectedItem()));
+        remove.removeTask(itemString, inventoryList);
+        //it returns the new arrayList and assigns it to todoList
+        return inventoryList;
 
     }
 

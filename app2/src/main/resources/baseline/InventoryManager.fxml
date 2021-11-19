@@ -48,15 +48,15 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <Label layoutX="169.0" layoutY="412.0" prefHeight="27.0" prefWidth="130.0" text="Error Message :" textFill="RED">
+      <Label layoutX="27.0" layoutY="412.0" prefHeight="27.0" prefWidth="130.0" text="Error Message :" textFill="RED">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="errorMessage" editable="false" layoutX="307.0" layoutY="413.0" prefHeight="26.0" prefWidth="214.0" style="-fx-background-color: red;" />
+      <TextField fx:id="errorMessage" editable="false" layoutX="163.0" layoutY="413.0" prefHeight="26.0" prefWidth="463.0" style="-fx-background-color: red;" />
       <TextField fx:id="serialNumber" alignment="CENTER" layoutY="72.0" promptText="Enter Serial Number" />
-      <TextField alignment="CENTER" layoutX="150.0" layoutY="72.0" promptText="Name of Product" />
-      <TextField alignment="CENTER" layoutX="300.0" layoutY="72.0" prefHeight="26.0" prefWidth="94.0" promptText="Value" />
+      <TextField fx:id="nameOfProduct" alignment="CENTER" layoutX="150.0" layoutY="72.0" promptText="Name of Product" />
+      <TextField fx:id="valueOfProduct" alignment="CENTER" layoutX="300.0" layoutY="72.0" prefHeight="26.0" prefWidth="94.0" promptText="Value" />
       <Button fx:id="addButton" layoutX="404.0" layoutY="72.0" mnemonicParsing="false" onAction="#addButtonClicked" text="Add" />
       <Button fx:id="removeButton" layoutX="452.0" layoutY="72.0" mnemonicParsing="false" onAction="#removeButtonClicked" text="Remove" />
       <Button fx:id="clearButton" layoutX="521.0" layoutY="72.0" mnemonicParsing="false" onAction="#clearButtonClicked" text="Clear" />

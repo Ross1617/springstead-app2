@@ -5,13 +5,16 @@ import java.util.ArrayList;
 public class addItems {
     //create a new array list
     ArrayList<String> newInventory = new ArrayList<>();
-    public ArrayList<String> addTask(String socialNumber, String product, String value){
+    public ArrayList<String> addTask(String socialNumber, String product, String value, ArrayList<String> inventory){
         // gets the information in the date field and saves it
         // gets the information in the description and saves it
         // gets the information in the completed and saves it
         //add all three to items
+        String newRow = socialNumber + "_" + product + "_" + value;
         //adds the row
+        inventory.add(newRow);
         //returns the new ArrayList
-        return newInventory;
+
+        return inventory;
     }
 }
