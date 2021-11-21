@@ -10,7 +10,7 @@ public class addItems {
         // gets the information in the description and saves it
         // gets the information in the completed and saves it
         //add all three to items
-        String newRow = socialNumber + "_" + product + "_" + value;
+        String newRow = socialNumber + "\t" + product + "\t" +value;
         //adds the row
         inventory.add(newRow);
         //returns the new ArrayList

@@ -9,35 +9,21 @@ public class checkValid {
         //check to see if the text is valid
 
         int sizeOfArrayList = list.size();
-        System.out.printf("Size of array %s",sizeOfArrayList);
         //if the number is wrong
         String text = checkSocialNumber(number);
         //return a string
-        if (name.length()>256 || name.length()<2){
-            text += "Name length not correct, ";
-        }
+        text += testName(name);
         for(int i=0; i <sizeOfArrayList; i++){
             String word = list.get(i);
-            String words[]= word.split("_");
+            String words[]= word.split("\t");
             String listNumber = words[0];
             String listName = words[1];
             String listValue = words[2];
-            System.out.printf("listNumber %s, number %s",listNumber, number);
             if(listNumber.equals(number)){
                 text += "SocialNumber already in the table!";
             }
         }
-        try{
-            double val = Double.parseDouble(value);
-        }
-
-        catch (NumberFormatException ex){
-            text += "Value is not in USD";
-        }
-
-
-
-
+        text += testValue(value);
         //else if the number is used already
         //return a different error message
         //else
@@ -75,7 +61,34 @@ public class checkValid {
                 }
             }
         }
-        return "";
+        return " ";
     }
+    public String testValue(String value){
+        String text = "";
+        double val = 0;
+        String anotherSubString = value.substring(0,1);
+        try{
+            String subString = value.substring(1);
+            val = Double.parseDouble(subString);
+        }
+        catch (NumberFormatException ex){
+            text += "Value is not in USD";
+        }
+        if (val <0){
+            text += "Cannot have negative money";
+        }
+        if (!(anotherSubString.equals("$"))){
+            text += "Need a $";
+        }
+        return text;
+    }
+    public String testName(String name){
+        String text = "";
+        if (name.length()>256 || name.length()<2){
+            text += "Name length not correct, ";
+        }
+        return text;
+    }
+
 
 }

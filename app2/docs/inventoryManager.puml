@@ -1,15 +1,121 @@
 @startuml
 'https://plantuml.com/sequence-diagram
+class InventoryManagementApplication{
+    +start;
+    +main;
+}
+class addItems{
+    +addTask(String socialNumber, String number, String value, String product, ArrayList<String> inventory)
+}
+class ApplicationController{
+    -ArrayList<String> inventoryList
+    -MenuButton Load
+    -MenuButton Save
+    -Button addButton
+    -Button clearButton
+    -TextField errorMessage
+    -MenuItem loadHTML
+    -MenuItem loadHTMl
+    -MenuItem loadJSON
+    -MenuItem loadTSV
+    -Button removeButton
+    -MenuItem saveJSON
+    -MenuItem saveTSV
+    -Button searchButton
+    -TextField serialNumber
+    -TableView<inventoryItem> tableOfValues
+    -TextField nameOfProduct
+    -TextField valueOfProduct
+    -TableColumn<inventoryItem, String> valueColumn
+    -TableColumn<inventoryItem, String> SerialNumberColumn
+    -TableColumn<inventoryItem, String> nameColumn
+    -ObservableList<inventoryItem> inventory
+    +LoadClicked(ActionEvent event)
+    +LoadTSVClicked(ActionEvent event)
+    +loadJSONClicked(ActionEvent event)
+    +saveClicked(ActionEvent event)
+    +SaveHTMLClicked(ActionEvent event)
+    +saveJSONClicked(ActionEvent event)
+    +SaveTSVCLICKED(ActionEvent event)
+    +ArrayList<String> addButtonClicked(ActionEvent event)
+    +clearButtonClicked(ActionEvent event)
+    +loadHTMLClicked(ActionEvent event)
+    +ArrayList<String> removeButtonClicked(ActionEvent event)
+    +searchButtonClicked(ActionEvent event)
+
+
+}
+class checkValid{
+    +String checkValid(String number, String name, String value, ArrayList<String> list)
+    +String checkSocialNumber(String number)
+    +String testValue(String value)
+}
+class clearEverything{
+    +ArrayList<String> clearArrayList()
+}
+class inventoryItem{
+    -SimpleStringProperty serialNumber
+    -SimpleStringProperty value
+    -SimpleStringProperty name
+    +inventoryItem(String number, String name, String value)
+    +String getNumber()
+    +setNumber(String newNumber)
+    +String getValue()
+    +setValue(String newValue)
+    +String getName()
+    +setName(String newName)
+}
+class modifyShown{
+    +ArrayList<String> modifyArrayList(ArrayList<String> oldArrayList, String newText, String oldText, int number)
+}
+class openFileJSON{
+    -String serialNumber
+    -String value
+    -String name
+    +parseJSONFile(JSONObject item)
+    +String getNumber()
+    +String getValue()
+    +String name()
+}
+class openFileTSV{
+    -String number
+    -String value
+    -String name
+    +parseInformation(String words)
+    +String getNumber()
+    +String getValue()
+    +String name()
+}
+class removeItems{
+    -ArrayList<String> newTodoList
+    +removeTask(String value, ArrayList<String> list)
+}
+class saveFileHTML{
+    -FileWriter file
+    +saveFile(ArrayList<String list)
+}
+class saveFileJSON{
+    -FileWriter file
+    +fileSave(ArrayList<String list)
+}
+class fileSave{
+    +fileSave(File file, ArrayList<String> list)
+}
+class searchFor{
+    +ArrayList<String> searchFor(ArrayList<String> list, String word, int number)
+}
 
 ApplicationController---InventoryManagementApplication
-InventoryManagementApplication---addItems
-InventoryManagementApplication---checkValid
-InventoryManagementApplication---clearEverything
-InventoryManagementApplication---inventoryItem
-InventoryManagementApplication---openFile
-InventoryManagementApplication---removeItems
-InventoryManagementApplication---saveFile
-InventoryManagementApplication---searchFor
-InventoryManagementApplication---setErrorMessage
-
+ApplicationController---addItems
+ApplicationController---checkValid
+ApplicationController---clearEverything
+ApplicationController---inventoryItem
+ApplicationController--- removeItems
+ApplicationController---saveFileJSON
+ApplicationController---searchFor
+ApplicationController---fileSave
+ApplicationController---saveFileHTML
+ApplicationController---openFileTSV
+ApplicationController---openFileJSON
+ApplicationController---modifyShown
 @enduml
