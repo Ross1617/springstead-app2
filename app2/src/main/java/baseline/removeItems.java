@@ -8,8 +8,6 @@ public class removeItems {
     public ArrayList<String> removeTask(String value,ArrayList<String> list){
         //deletes the information that is contained at that index
         list.remove(value);
-
-
         //returns updated List
         return newTodoList;
     }

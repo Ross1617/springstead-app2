@@ -5,7 +5,7 @@ import java.lang.*;
 
 //should compare a word to the list to see if it in the list already
 public class checkValid {
-    public String checkValid(String number, String name, String value, ArrayList<String> list) {
+    public String checkingValid(String number, String name, String value, ArrayList<String> list) {
         //check to see if the text is valid
 
         int sizeOfArrayList = list.size();
@@ -17,8 +17,6 @@ public class checkValid {
             String word = list.get(i);
             String words[]= word.split("\t");
             String listNumber = words[0];
-            String listName = words[1];
-            String listValue = words[2];
             if(listNumber.equals(number)){
                 text += "SocialNumber already in the table!";
             }
@@ -39,25 +37,22 @@ public class checkValid {
             char char1 = number.charAt(1);
             char char2 = number.charAt(5);
             char char3 = number.charAt(9);
+            String output = "Invalid input - in the wrong place, ";
             if (char1 != '-'){
-                return "Invalid input - in the wrong place, ";
+                return output;
             }
             if (char2 != '-'){
-                return "Invalid input - in the wrong place, ";
+                return output;
             }
             if (char3 != '-'){
-                return "Invalid input - in the wrong place, ";
+                return output;
             }
             for (int i = 0; i < 13; i++) {
-                if (i == 0) {
-                    if (!Character.isLetter(number.charAt(0))) {
-                        return "Invalid input for Serial Number, ";
-                    }
+                if ((i == 0) && (!Character.isLetter(number.charAt(0)))) {
+                    return "Invalid input for Serial Number, ";
                 }
-                if (!(i == 1 || i == 5 || i == 9)) {
-                    if (!(Character.isLetter(number.charAt(i)) || Character.isDigit(number.charAt(i)))) {
-                        return "Invalid input number or letter not in correct place, ";
-                    }
+                if (!(i == 1 || i == 5 || i == 9) && (!(Character.isLetter(number.charAt(i)) || Character.isDigit(number.charAt(i)))) ) {
+                    return "Invalid input number or letter not in correct place, ";
                 }
             }
         }
@@ -66,8 +61,10 @@ public class checkValid {
     public String testValue(String value){
         String text = "";
         double val = 0;
+        //making sure there is a $ sign
         String anotherSubString = value.substring(0,1);
         try{
+            //making sure the value is a double
             String subString = value.substring(1);
             val = Double.parseDouble(subString);
         }

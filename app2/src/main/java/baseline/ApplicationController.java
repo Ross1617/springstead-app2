@@ -26,7 +26,6 @@ import org.json.simple.parser.ParseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -56,8 +55,6 @@ public class ApplicationController implements Initializable {
     @FXML
     private MenuItem loadHTML;
 
-    @FXML
-    private MenuItem loadHTMl;
 
     @FXML
     private MenuItem loadJSON;
@@ -174,7 +171,7 @@ public class ApplicationController implements Initializable {
                     String old = oldNumber+"\t" + oldName + "\t"+ oldValue;
                     //changing the array list
                     checkValid check = new checkValid();
-                    String error = check.checkValid(newNumber,oldName,oldValue,inventoryList);
+                    String error = check.checkingValid(newNumber,oldName,oldValue,inventoryList);
                     if (!(error.equals(" "))){
                         errorMessage.setText("New SerialNumber is not Valid");
                         ((inventoryItem)t.getTableView().getItems().get(t.getTablePosition().getRow())).setNumber(oldNumber);
@@ -189,11 +186,8 @@ public class ApplicationController implements Initializable {
 
 
     private ObservableList<inventoryItem> inventory = FXCollections.observableArrayList();
-    @FXML
-    void LoadClicked(ActionEvent event) {
 
 
-    }
 
     @FXML
     void LoadTSVClicked(ActionEvent event)throws FileNotFoundException{
@@ -205,6 +199,7 @@ public class ApplicationController implements Initializable {
         clearEverything clear = new clearEverything();
         inventoryList = clear.clearArrayList();
         File file = fileChooser.showOpenDialog(new Stage());
+        //making sure it is a txt file
         if(file.getName().endsWith(".txt")){
             try{
                 Scanner scanner = new Scanner(file);
@@ -214,32 +209,29 @@ public class ApplicationController implements Initializable {
             }catch (FileNotFoundException e){
                 e.printStackTrace();
             }
-            // goes through every line
-
+            // goes through every line that was just scanned in
             for (int i = 0; i < temp.size(); i++ ){
                 parser.parseInformation(temp.get(i));
                 String number1 = parser.getNumber();
                 String name1 = parser.getName();
                 String value1 = parser.getValue();
                 checkValid check = new checkValid();
-                String error = " ";
-                error = check.checkValid(number1,name1,value1,inventoryList);
-
+                //making sure the information was correct
+                String error = check.checkingValid(number1,name1,value1,inventoryList);
                 if (error.equals(" ")) {
                     inventoryList = add.addTask(number1,name1,value1,inventoryList);
                     inventoryItem todoItem = new inventoryItem(number1, name1, value1);
                     tableOfValues.getItems().add(todoItem);
-
                 }
                 else {
+                    //if there is a valid error in the file then it doesn't update the table, instead leaves error message
                     errorMessage.setText("In proper formatting of the TSV txt file");
                     tableOfValues.getItems().clear();
                     inventoryList = clear.clearArrayList();
                     break;
                 }
             }
-
-            }
+        }
         else{
             errorMessage.setText("Not a txt File");
         }
@@ -257,32 +249,34 @@ public class ApplicationController implements Initializable {
         inventoryList = clear.clearArrayList();
         File file = fileChooser.showOpenDialog(new Stage());
         JSONParser jsonParser = new JSONParser();
+        //making sure it is in the correct format
         if(file.getName().endsWith(".json")) {
             try (FileReader reader = new FileReader(file)) {
                 Object obj = jsonParser.parse(reader);
                 JSONArray item = (JSONArray) obj;
                 for (int i = 0; i< item.size(); i++){
+                    //parsing through all the information and storing it
                     parser.parseJSONFile((JSONObject) item.get(i));
                     String number1 = parser.getNumber();
                     String name1 = parser.getName();
                     String value1 = parser.getValue();
                     checkValid check = new checkValid();
                     String error = " ";
-                    error = check.checkValid(number1,name1,value1,inventoryList);
+                    error = check.checkingValid(number1,name1,value1,inventoryList);
+                    //making sure there is no errors
                     if (error.equals(" ")) {
                         inventoryList = add.addTask(number1,name1,value1,inventoryList);
                         inventoryItem todoItem = new inventoryItem(number1, name1, value1);
                         tableOfValues.getItems().add(todoItem);
                     }
                     else {
+                        //if there is a valid error in the file then it doesn't update the table, instead leaves error message
                         errorMessage.setText("In proper formatting of the JSON txt file");
                         tableOfValues.getItems().clear();
                         inventoryList = clear.clearArrayList();
                         break;
                     }
                 }
-
-
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -293,11 +287,6 @@ public class ApplicationController implements Initializable {
 
     }
 
-    @FXML
-    void SaveClicked(ActionEvent event) {
-
-
-    }
 
     @FXML
     void SaveHTMLClicked(ActionEvent event) throws IOException {
@@ -338,9 +327,9 @@ public class ApplicationController implements Initializable {
         number = serialNumber.getText();
         name = nameOfProduct.getText();
         value = valueOfProduct.getText();
-        String error = " ";
         checkValid check = new checkValid();
-        error = check.checkValid(number,name,value,inventoryList);
+        String error = check.checkingValid(number,name,value,inventoryList);
+        //check to see if there is any problem with the input
         if (error.equals(" ")){
             inventoryItem item = new inventoryItem(number, name, value);
             tableOfValues.getItems().add(item);
@@ -351,6 +340,7 @@ public class ApplicationController implements Initializable {
             valueOfProduct.clear();
         }
         else {
+            //if there is a problem it displays the error
             errorMessage.setText(error);
         }
         return inventoryList;
@@ -368,25 +358,27 @@ public class ApplicationController implements Initializable {
     @FXML
     void loadHTMLClicked(ActionEvent event) throws FileNotFoundException {
         addItems add = new addItems();
+        //clears what was left
         tableOfValues.getItems().clear();
         clearEverything clear = new clearEverything();
         inventoryList = clear.clearArrayList();
         File file = fileChooser.showOpenDialog(new Stage());
         FileReader fr = new FileReader(file);
         StringBuilder html = new StringBuilder();
-        //clears what was left
+        //opening the file only if it is a html
         if(file.getName().endsWith(".html")){
             try{
+                //reading the input
                 BufferedReader br = new BufferedReader(fr);
                 String val;
                 while ((val = br.readLine()) != null){
                     html.append(val);
                 }
                 br.close();
-                String result = html.toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //if there is a valid error in the file then it doesn't update the table, instead leaves error message
             Document doc = Jsoup.parse(String.valueOf(html));
             org.jsoup.select.Elements rows = doc.select("tr");
             int counter = 0;
@@ -407,9 +399,8 @@ public class ApplicationController implements Initializable {
                     String number1 = holder.get(0);
                     String value1 = holder.get(2);
                     checkValid check = new checkValid();
-                    String error = " ";
-                    error = check.checkValid(number1,name1,value1,inventoryList);
-
+                    String error = check.checkingValid(number1,name1,value1,inventoryList);
+                    //if there is no error
                     if (error.equals(" ")) {
                         inventoryList = add.addTask(number1,name1,value1,inventoryList);
                         inventoryItem todoItem = new inventoryItem(number1, name1, value1);
@@ -417,6 +408,7 @@ public class ApplicationController implements Initializable {
 
                     }
                     else {
+                        //if there is a valid error in the file then it doesn't update the table, instead leaves error message
                         errorMessage.setText("In proper formatting of a HTML file");
                         tableOfValues.getItems().clear();
                         inventoryList = clear.clearArrayList();
@@ -441,26 +433,30 @@ public class ApplicationController implements Initializable {
         remove.removeTask(itemString, inventoryList);
         //it returns the new arrayList and assigns it to todoList
         return inventoryList;
-
     }
 
     @FXML
     void searchButtonClicked(ActionEvent event) {
+        //creates a blank arrayList
         ArrayList<String> newDisplay = new ArrayList<String>();
         String number = serialNumber.getText();
         String name = nameOfProduct.getText();
         searchFor search = new searchFor();
         int test = 0;
+        //checks to see which parameter the user wants to search for
         if(!(number.equals(""))){
             tableOfValues.getItems().clear();
-            newDisplay = search.searchFor(inventoryList,number,1);
+            //calls the function
+            newDisplay = search.searchForStuff(inventoryList,number,1);
             test =1 ;
         }
         else if(!(name.equals(""))){
             tableOfValues.getItems().clear();
-            newDisplay = search.searchFor(inventoryList,name,2);
+            //calls the function
+            newDisplay = search.searchForStuff(inventoryList,name,2);
             test = 1;
         }
+        //if search is called with no parameters it shows everything in the table
         else{
             tableOfValues.getItems().clear();
             int size = inventoryList.size();
@@ -474,6 +470,7 @@ public class ApplicationController implements Initializable {
                 tableOfValues.getItems().add(item);
             }
         }
+        //if the user wants to search for something this will be called
         if (test == 1){
             int size = newDisplay.size();
             for(int i = 0; i < size; i ++){
@@ -486,10 +483,15 @@ public class ApplicationController implements Initializable {
                 tableOfValues.getItems().add(item);
             }
         }
-        //get the value in the tableMaker
-        //call searchFor function
-        //update the table viewer
-        //call checkValid if it is not found
     }
+    @FXML
+    void SaveClicked(ActionEvent event) {
+        return;
+    }
+    @FXML
+    void LoadClicked(ActionEvent event) {
+        return;
+    }
+
 
 }

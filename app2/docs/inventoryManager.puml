@@ -46,7 +46,7 @@ class ApplicationController{
 
 }
 class checkValid{
-    +String checkValid(String number, String name, String value, ArrayList<String> list)
+    +String checkingValid(String number, String name, String value, ArrayList<String> list)
     +String checkSocialNumber(String number)
     +String testValue(String value)
 }

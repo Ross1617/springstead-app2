@@ -12,19 +12,21 @@ import java.util.ArrayList;
 public class saveFileHTML {
     private FileWriter file;
     public void saveFile(ArrayList<String> list) throws IOException {
+        //baseline html code
         String html = "<!DOCTYPE html>\n  <html>\n  <style>\n  table, th, td {\n    border:1px solid black;\n  }\n  </style>\n  <body>\n  \n  <h2>Ross' Item Manager</h2>\n  \n  <table style=\"width:100%\">";
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName("enterName.html");
         File fileMaker = fileChooser.showSaveDialog(new Stage());
         file = new FileWriter(fileMaker);
-
         try{
             BufferedWriter bw = new BufferedWriter(file);
             bw.write(html);
+            //writes the header
             bw.write("<tr>");
             bw.write("<td>" + "Serial Number" +"</td>+ <td>" + "Name" +"</td> + <td>" + "Value" +"</td>");
             bw.write("</tr>");
             for(int i = 0; i< list.size();i++){
+                //goes through each element and adds them
                 bw.write("<tr>");
                 String old = list.get(i);
                 String words[] = old.split("\t");
@@ -34,10 +36,9 @@ public class saveFileHTML {
                 bw.write("<td>" + serialNumber +"</td>+ <td>" + name +"</td> + <td>" + value +"</td>");
                 bw.write("</tr>");
             }
+            //closes everything
             bw.write("</table>");
-            bw.write("\n" +
-                    "</body>\n" +
-                    "</html>");
+            bw.write("\n" + "</body>\n" + "</html>");
             bw.close();
         }catch (IOException e){
             e.printStackTrace();

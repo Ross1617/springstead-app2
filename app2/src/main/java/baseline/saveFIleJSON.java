@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class saveFIleJSON {
     private FileWriter file;
     public void fileSave( ArrayList<String> list) throws IOException {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName("enterName.json");
         File fileMaker = fileChooser.showSaveDialog(new Stage());
@@ -21,7 +20,7 @@ public class saveFIleJSON {
         int lines = list.size();
         JSONArray itemList = new JSONArray();
         for(int i = 0; i < lines; i++){
-            //JSONArray arr = new JSONArray();
+            //goes through all the information
             String old = list.get(i);
             String words[] = old.split("\t");
             String serialNumber = words[0];
@@ -29,6 +28,7 @@ public class saveFIleJSON {
             String value = words[2];
             JSONObject Item = new JSONObject();
             JSONObject obj = new JSONObject();
+            //adds everything with a key
             Item.put("Serial Number",serialNumber);
             Item.put("Name",name);
             Item.put("Value",value);
@@ -36,6 +36,7 @@ public class saveFIleJSON {
             itemList.add(obj);
         }
         try{
+            //writes it then closes
             file.write(itemList.toJSONString());
             file.close();
 
