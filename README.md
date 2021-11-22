@@ -1,8 +1,7 @@
 # springstead-app-2
 Hello and welcome to my inventory management application.  
 
-The link to my video is 
-
+The link to my video it had to be in two parts: part 1 https://youtu.be/Ow8SynYfj3o and part 2 https://youtu.be/YXXKGu5kqbc
 In my application there are three textboxes in the left middle of the screen. The first one being a spot for the serial number. Where each serial number is unique and follows the pattern of number, -, three letters or numbers, -, three letter or numbers, -, and lastly three more numbers or letters. An example would be a-213-es3-ew9. And the second text box is for the name of the product. Here the restrictions for the box are that the characters must be withing 2 - 256. And the last box is for the value/price. And the requirements are that you must enter a USD amount which has to be positive. An example would be $12.32. After filling out all three of these boxes you can press the Add button and the inputs will be displayed in the table. Unless you did not satisfy the requirements, then an error message will pop up in the bottom of the screen telling what was wrong. If all three are satisfied then the item will go into the table and an array list. 
 
 To remove an item from the table all you must do is select any row and press the delete button. This will cause the item to be removed from the table and from the array list. 
